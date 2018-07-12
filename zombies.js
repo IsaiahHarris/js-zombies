@@ -150,13 +150,12 @@ class Player {
   takeItem(item) {
     if (this._pack.length < 3) {
       this._pack.push(item);
-      console.log('added');
+      console.log(this.name + 'success');
       return true;
     } else {
       console.log('Pack is full');
       return false;
     }
-
 
   }
 
@@ -191,10 +190,10 @@ class Player {
 
     if (itemIndexNumber >= 0) {
       this._pack.splice(itemIndexNumber, 1);
-      console.log('discarded');
+      console.log(this.item + this.name + ' was discarded');
       return true;
     } else {
-      console.log('false');
+      console.log('nothing discarded');
       return false;
     }
   }
@@ -204,7 +203,7 @@ class Player {
    */
 
   checkPack() {
-    console.log(this.pack);
+    console.log(this._pack);
   }
 
   /**
@@ -260,15 +259,15 @@ class Player {
   * @name eat
   * @param {Food} itemToEat  The food item to eat.
   */
+
   eat(itemToEat) {
     if (itemToEat instanceof Food && this._pack.includes(itemToEat)) {
       let itemToEatIndex = this._pack.indexOf(itemToEat);
       this._pack.splice(itemToEatIndex, 1);
-      if (this.health + itemToEat.energy < this.getMaxHealth()) {
-        this.health += itemToEat.energy;
-        return;
-      }
-      this.health = this.getMaxHealth();
+      this.health += itemToEat.energy;
+      if (this.health > this.getMaxHealth()) { 
+        this.health = this.getMaxHealth();
+      } 
     }
   }
 
@@ -290,8 +289,6 @@ class Player {
       this.equip(item)
     } else if (item instanceof Food) {
       this.eat(item)
-    } else {
-      return false;
     }
   }
   /**
@@ -308,12 +305,12 @@ class Player {
   * @return {string/boolean}   Weapon name or false if nothing is equipped.
   */
   equippedWith() {
-    if (this.equipped === false) {
-      console.log('no weapon is equipped')
-      return false
+    if (this.equipped) {
+      console.log(this.name + ' equipped ' + this.equipped);
+      return this.equipped.name;
     } else {
-      console.log('no weapon equipped')
-      return this.equipped.name
+      console.log('no weapon is equipped');
+      return false;
     }
   }
 }
@@ -339,8 +336,8 @@ class Zombie {
     this.strength = strength;
     this.speed = speed;
     this.isAlive = true;
-
-  }
+    this._maxHealth = health;
+  } 
 }
 /**
 * Class => FastZombie(health, strength, speed)
@@ -365,10 +362,7 @@ class Zombie {
 
 class FastZombie extends Zombie {
   constructor(health, strength, speed) {
-    super(Zombie);
-    this.health = health;
-    this.strength = strength;
-    this.speed = speed;
+    super(health, strength, speed);
   }
 }
 
@@ -396,10 +390,7 @@ class FastZombie extends Zombie {
 
 class StrongZombie extends Zombie {
   constructor(health, strength, speed) {
-    super(Zombie);
-    this.health = health;
-    this.strength = strength;
-    this.speed = speed;
+    super(health, strength, speed);
   }
 }
 /**
@@ -425,10 +416,7 @@ class StrongZombie extends Zombie {
 
 class RangedZombie extends Zombie {
   constructor(health, strength, speed) {
-    super(Zombie);
-    this.health = health;
-    this.strength = strength;
-    this.speed = speed;
+    super(health, strength, speed);
   }
 }
 
@@ -448,12 +436,8 @@ class RangedZombie extends Zombie {
 */
 class ExplodingZombie extends Zombie {
   constructor(health, strength, speed) {
-    super(Zombie);
-    this.health = health;
-    this.strength = strength;
-    this.speed = speed;
+    super(health, strength, speed);
   }
-
 }
 
 /**
