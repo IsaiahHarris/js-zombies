@@ -9,24 +9,10 @@
  */
 
 class Item {
-    constructor (name){
-      this._name = name;
-    }
-
-    get name(){
-      return this._name
-    }
-
-    set name(name){
-      if(typeof(name) === 'string'){
-        this._name = name;
-      }else {
-        throw new TypeError('must be string')
-      }
-    }
+  constructor(name) {
+    this.name = name;
+  }
 }
-
-
 
 /**
  * Class => Weapon(name, damage)
@@ -44,31 +30,17 @@ class Item {
  * @property {number} damage
  */
 
-class Weapon extends Item {
-  constructor(name, damage){
-    super(damage);
-    this._damage = damage;
-    this._name = name;
-
-  }
-  get damage(){
-    return this._damage
-  }
-
-  set damage(damage){
-    if (typeof(damage) === 'number') {
-      return this._damage = damage
-    }else {
-      throw new TypeError('must be number');
-    }
-  }
-}
 /**
  * Weapon Extends Item Class
  * -----------------------------
  */
 
-
+class Weapon extends Item {
+  constructor(name, damage) {
+    super(name);
+    this.damage = damage;
+  }
+}
 
 /**
  * Class => Food(name, energy)
@@ -86,31 +58,17 @@ class Weapon extends Item {
  * @property {number} energy
  */
 
-class Food extends Item{
-
-  constructor(name, energy){
-    super(energy);
-    this._energy = energy;
-    this._name = name;
-  }
-  get energy(){
-    return this._energy
-  }
-
-  set energy (energy){
-    if (typeof(energy) === 'number') {
-      return this._energy = energy
-    }else {
-      throw new TypeError('must be number');
-    }
-  }
-}
 /**
  * Food Extends Item Class
  * -----------------------------
  */
 
-
+class Food extends Item {
+  constructor(name, energy) {
+    super(name);
+    this.energy = energy;
+  }
+}
 
 /**
  * Class => Player(name, health, strength, speed)
@@ -134,320 +92,370 @@ class Food extends Item{
  * @property {method} getMaxHealth         Returns private variable `maxHealth`.
  */
 
-class Player{
-  constructor (name, health, strength, speed){
+class Player {
+  constructor(name, health, strength, speed) {
     this._pack = [];
     this._maxHealth = health;
-    this._name = name;
-    this._health = health;
-    this._strength = strength;
-    this._speed = speed;
-    this._isAlive = true
-    this._equipped = false;
-
-  }
-  get name(){
-    return this._name;
-  }
-  get health(){
-    return this._health;
-  }
-  get strength(){
-    return this._strength;
-  }
-  get speed(){
-    return this._speed;
-  }
-  get isAlive (){
-    return this._isAlive;
-  }
-  get equipped(){
-    return this._equipped
+    this.name = name;
+    this.health = health;
+    this.strength = strength;
+    this.speed = speed;
+    this.isAlive = true;
+    this.equipped = false;
   }
 
-getPack(){
-  return this._pack
+  /**
+   * Player Class Method => checkPack()
+   * -----------------------------
+   * Player checks the contents of their pack.
+   *
+   * Nicely format and print the items in the player's pack.
+   * To access the pack, be sure to use Player's getPack method.
+   * You should be able to invoke this function on a Player instance.
+   *
+   * @name checkPack
+   */
+
+  getPack() {
+    return this._pack;
+  }
+
+  /**
+   * Player Class Method => getMaxHealth()
+   */
+
+  getMaxHealth() {
+    return this._maxHealth;
+  }
+
+  /**
+   * Player Class Method => takeItem(item)
+   * -----------------------------
+   * Player takes an item from the world and places it into their pack.
+   *
+   * Player's pack can only hold a maximum of 3 items, so if they try to add more
+   *   than that to the pack, return false.
+   * Before returning true or false, print a message containing the player's
+   *   name and item's name if successful.  Otherwise, print a message saying
+   *   that the pack is full so the item could not be stored.
+   * Note: The player is allowed to store similar items (items with the same name).
+   * You should be able to invoke this function on a Player instance.
+   *
+   * @name takeItem
+   * @param {Item/Weapon/Food} item   The item to take.
+   * @return {boolean} true/false     Whether player was able to store item in pack.
+   */
+
+  takeItem(item) {
+    if (this._pack.length < 3) {
+      this._pack.push(item);
+      console.log('added');
+      return true;
+    } else {
+      console.log('Pack is full');
+      return false;
+    }
+
+
+  }
+
+  /**
+   * Player Class Method => discardItem(item)
+   * -----------------------------
+   * Player discards an item from their pack.
+   *
+   * Use Array's indexOf method to check if the pack contains the item.
+   * If an item is not found in the pack, indexOf returns -1.
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
+   *
+   * If the item is in the pack, remove it from the pack using Array's splice method.
+   * Print the player and item names and a message saying the item was discarded.
+   * Return true for the successful discard.
+   * Note: The splice method can also be used for array element replacement.
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
+   *
+   * If the item is not in the pack, return a message with the item name saying
+   *   nothing was discarded since the item could not be found.
+   * Return false in this case.
+   *
+   * You should be able to invoke this function on a Player instance.
+   *
+   * @name discardItem
+   * @param {Item/Weapon/Food} item   The item to discard.
+   * @return {boolean} true/false     Whether player was able to remove item from pack.
+   */
+
+  discardItem(item) {
+    const itemIndexNumber = this._pack.indexOf(item);
+
+    if (itemIndexNumber >= 0) {
+      this._pack.splice(itemIndexNumber, 1);
+      console.log('discarded');
+      return true;
+    } else {
+      console.log('false');
+      return false;
+    }
+  }
+
+  /**
+   * Player Class Method => checkPack()
+   */
+
+  checkPack() {
+    console.log(this.pack);
+  }
+
+  /**
+   * Player Class Method => equip(itemToEquip)
+   * -----------------------------
+   * Player equips a weapon item.
+   *
+   * Player can only equip Weapon instances.
+   * Player can only equip weapon items from their pack.
+   *
+   * If the player already has a weapon equipped (the equipped property
+   *   is set to an Item), find the itemToEquip in the pack and replace
+   *   it with the currently equipped item.  Then set the equipped property
+   *   to the itemToEquip.
+   * However, if the player doesn't already have a weapon equipped, simply
+   *   equip that item and remove it from the pack.
+   * You should be able to invoke this function on a Player instance.
+   *
+   * @name equip
+   * @param {Weapon} itemToEquip  The weapon item to equip.
+   */
+
+  equip(itemToEquip) {
+    if (itemToEquip instanceof Weapon && this._pack.includes(itemToEquip)) {
+      let itemToEquipIndex = this._pack.indexOf(itemToEquip);
+      if (this.equipped) {
+        this._pack.splice(itemToEquipIndex, 1, this.equipped);
+        this.equipped = itemToEquip;
+        return;
+      }else{
+        this.equipped = itemToEquip;
+        this._pack.splice(itemToEquipIndex, 1);
+      }
+    }
+    }
+
+
+/**
+* Player Class Method => eat(itemToEat)
+* -----------------------------
+* Player eats a food item, restoring their health.
+*
+* Player can only eat Food instances.
+* Player can only eat food items from their pack.
+*
+* Remove itemToEat from the pack.
+* Increase the player's health by the food's energy amount, but do not
+*   exceed the player's max health.  If exceeded, simply set player's health
+*   to max health instead.
+* To access the player's max health, be sure to use Player's getMaxHealth method.
+* You should be able to invoke this function on a Player instance.
+*
+* @name eat
+* @param {Food} itemToEat  The food item to eat.
+*/
+eat(itemToEat) {
+  if (itemToEat instanceof Food &&this._pack.includes(itemToEat)) {
+  let itemToEatIndex = this._pack.indexOf(itemToEat);
+    this._pack.splice(itemToEatIndex, 1);
+    if (this.health + itemToEat.energy < this.getMaxHealth()) {
+      this.health += itemToEat.energy;
+      return;
+    }
+    this.health = this.getMaxHealth();
+  }
 }
-getMaxHealth(){
-  return this._maxHealth;
-}
+  
+/**
+* Player Class Method => useItem(item)
+* -----------------------------
+* Player uses an item from the pack.
+*
+* If the item is a weapon, the player should equip the item.
+* If the item is food, the player should eat the item.
+* You should be able to invoke this function on a Player instance.
+*
+* @name useItem
+* @param {Item/Weapon/Food} item   The item to use.
+*/
 
-takeItem(item){
-  if (this._pack.length <3){
-    this._pack.push(item);
-    console.log('added item')
-    return true;
+useItem(item){
+  if(item instanceof Weapon){
+    this.equip(item)
+  }else if(item instanceof Food){
+    this.eat(item)
   }else {
-    console.log('pack full, cannot add anymore');
+    return false;
+  }
+}
+/**
+* Player Class Method => equippedWith()
+* -----------------------------
+* Player checks their equipment.
+*
+* Prints the player's name and equipped weapon's name.
+* If nothing is equipped, prints a message saying so.
+* Also returns the equipped weapon's name or false if nothing is equipped.
+* You should be able to invoke this function on a Player instance.
+*
+* @name equippedWith
+* @return {string/boolean}   Weapon name or false if nothing is equipped.
+*/
+equippedWith(){
+  if(this.equipped === false){
+    console.log('no weapon is equipped')
     return false
-  }
-}
-
-discardItem(item){
-  console.log('running');
- if(this._pack.indexOf(item) === -1){
-   console.log('nothing was discarded')
-   return false
- }else {
-   this._pack.splice(this._pack.indexOf(item),1)
-   console.log('item was discarded');
-   return true;
-   }
-}
-checkPack(){
-console.log(this._pack);
-}
-equip(itemToEquip){
-  if(this._equipped = true){
-    this._pack.splice(this._pack.indexOf(itemToEquip), 1)
-    return true
   }else {
-
+    console.log('no weapon equipped')
+    return this.equipped.name
   }
 }
 }
 /**
- * Player Class Method => checkPack()
- * -----------------------------
- * Player checks the contents of their pack.
- *
- * Nicely format and print the items in the player's pack.
- * To access the pack, be sure to use Player's getPack method.
- * You should be able to invoke this function on a Player instance.
- *
- * @name checkPack
- */
+* Class => Zombie(health, strength, speed)
+* -----------------------------
+* Creates a normal zombie.
+*
+* @name Zombie
+* @param {number} health           The zombie's health.
+* @param {number} strength         The zombie's strength.
+* @param {number} speed            The zombie's speed.
+* @private {number} maxHealth      Default value should be set to `health`.
+* @property {number} health
+* @property {number} strength
+* @property {number} speed
+* @property {boolean} isAlive      Default value should be `true`.
+*/
 
+class Zombie{
+  constructor(health, strength, speed){
+    this.health = health;
+    this.strength = strength;
+    this.speed = speed;
+    this.isAlive = true;
+
+  }
+}
 /**
- * Player Class Method => takeItem(item)
- * -----------------------------
- * Player takes an item from the world and places it into their pack.
- *
- * Player's pack can only hold a maximum of 3 items, so if they try to add more
- *   than that to the pack, return false.
- * Before returning true or false, print a message containing the player's
- *   name and item's name if successful.  Otherwise, print a message saying
- *   that the pack is full so the item could not be stored.
- * Note: The player is allowed to store similar items (items with the same name).
- * You should be able to invoke this function on a Player instance.
- *
- * @name takeItem
- * @param {Item/Weapon/Food} item   The item to take.
- * @return {boolean} true/false     Whether player was able to store item in pack.
- */
-
-
-/**
- * Player Class Method => discardItem(item)
- * -----------------------------
- * Player discards an item from their pack.
- *
- * Use Array's indexOf method to check if the pack contains the item.
- * If an item is not found in the pack, indexOf returns -1.
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
- *
- * If the item is in the pack, remove it from the pack using Array's splice method.
- * Print the player and item names and a message saying the item was discarded.
- * Return true for the successful discard.
- * Note: The splice method can also be used for array element replacement.
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
- *
- * If the item is not in the pack, return a message with the item name saying
- *   nothing was discarded since the item could not be found.
- * Return false in this case.
- *
- * You should be able to invoke this function on a Player instance.
- *
- * @name discardItem
- * @param {Item/Weapon/Food} item   The item to discard.
- * @return {boolean} true/false     Whether player was able to remove item from pack.
- */
+* Class => FastZombie(health, strength, speed)
+* -----------------------------
+* Creates a fast zombie.
+*
+* The FastZombie class constructor will call
+*   the super class (Zombie) constructor
+*   while passing in the 3 Zombie constructor params
+*
+* @name FastZombie
+* @param {number} health           The zombie's health.
+* @param {number} strength         The zombie's strength.
+* @param {number} speed            The zombie's speed.
+*/
 
 
 /**
- * Player Class Method => equip(itemToEquip)
- * -----------------------------
- * Player equips a weapon item.
- *
- * Player can only equip Weapon instances.
- * Player can only equip weapon items from their pack.
- *
- * If the player already has a weapon equipped (the equipped property
- *   is set to an Item), find the itemToEquip in the pack and replace
- *   it with the currently equipped item.  Then set the equipped property
- *   to the itemToEquip.
- * However, if the player doesn't already have a weapon equipped, simply
- *   equip that item and remove it from the pack.
- * You should be able to invoke this function on a Player instance.
- *
- * @name equip
- * @param {Weapon} itemToEquip  The weapon item to equip.
- */
+* FastZombie Extends Zombie Class
+* -----------------------------
+*/
 
+class FastZombie extends Zombie {
+  super(health, strength, speed){
+
+  }
+
+}
 
 /**
- * Player Class Method => eat(itemToEat)
- * -----------------------------
- * Player eats a food item, restoring their health.
- *
- * Player can only eat Food instances.
- * Player can only eat food items from their pack.
- *
- * Remove itemToEat from the pack.
- * Increase the player's health by the food's energy amount, but do not
- *   exceed the player's max health.  If exceeded, simply set player's health
- *   to max health instead.
- * To access the player's max health, be sure to use Player's getMaxHealth method.
- * You should be able to invoke this function on a Player instance.
- *
- * @name eat
- * @param {Food} itemToEat  The food item to eat.
- */
-
-
-/**
- * Player Class Method => useItem(item)
- * -----------------------------
- * Player uses an item from the pack.
- *
- * If the item is a weapon, the player should equip the item.
- * If the item is food, the player should eat the item.
- * You should be able to invoke this function on a Player instance.
- *
- * @name useItem
- * @param {Item/Weapon/Food} item   The item to use.
- */
-
-
-/**
- * Player Class Method => equippedWith()
- * -----------------------------
- * Player checks their equipment.
- *
- * Prints the player's name and equipped weapon's name.
- * If nothing is equipped, prints a message saying so.
- * Also returns the equipped weapon's name or false if nothing is equipped.
- * You should be able to invoke this function on a Player instance.
- *
- * @name equippedWith
- * @return {string/boolean}   Weapon name or false if nothing is equipped.
- */
-
-
-/**
- * Class => Zombie(health, strength, speed)
- * -----------------------------
- * Creates a normal zombie.
- *
- * @name Zombie
- * @param {number} health           The zombie's health.
- * @param {number} strength         The zombie's strength.
- * @param {number} speed            The zombie's speed.
- * @private {number} maxHealth      Default value should be set to `health`.
- * @property {number} health
- * @property {number} strength
- * @property {number} speed
- * @property {boolean} isAlive      Default value should be `true`.
- */
-
-
-/**
- * Class => FastZombie(health, strength, speed)
- * -----------------------------
- * Creates a fast zombie.
- *
- * The FastZombie class constructor will call
- *   the super class (Zombie) constructor
- *   while passing in the 3 Zombie constructor params
- *
- * @name FastZombie
- * @param {number} health           The zombie's health.
- * @param {number} strength         The zombie's strength.
- * @param {number} speed            The zombie's speed.
- */
-
-
-/**
- * FastZombie Extends Zombie Class
- * -----------------------------
- */
+* Class => StrongZombie(health, strength, speed)
+* -----------------------------
+* Creates a strong zombie.
+*
+* The StrongZombie class constructor will call
+*   the super class (Zombie) constructor
+*   while passing in the 3 Zombie constructor params
+*
+* @name StrongZombie
+* @param {number} health           The zombie's health.
+* @param {number} strength         The zombie's strength.
+* @param {number} speed            The zombie's speed.
+*/
 
 
 
 /**
- * Class => StrongZombie(health, strength, speed)
- * -----------------------------
- * Creates a strong zombie.
- *
- * The StrongZombie class constructor will call
- *   the super class (Zombie) constructor
- *   while passing in the 3 Zombie constructor params
- *
- * @name StrongZombie
- * @param {number} health           The zombie's health.
- * @param {number} strength         The zombie's strength.
- * @param {number} speed            The zombie's speed.
- */
+* StrongZombie Extends Zombie Class
+* -----------------------------
+*/
+
+class StrongZombie extends Zombie{
+  super(health, strength, speed){
+
+  }
+}
+/**
+* Class => RangedZombie(health, strength, speed)
+* -----------------------------
+* Creates a ranged zombie.
+*
+* The RangedZombie class constructor will call
+*   the super class (Zombie) constructor
+*   while passing in the 3 Zombie constructor params
+*
+* @name RangedZombie
+* @param {number} health           The zombie's health.
+* @param {number} strength         The zombie's strength.
+* @param {number} speed            The zombie's speed.
+*/
 
 
 /**
- * StrongZombie Extends Zombie Class
- * -----------------------------
- */
+* RangedZombie Extends Zombie Class
+* -----------------------------
+*/
 
+class RangedZombie extends Zombie{
+  super(health, strength, speed){
 
-
-/**
- * Class => RangedZombie(health, strength, speed)
- * -----------------------------
- * Creates a ranged zombie.
- *
- * The RangedZombie class constructor will call
- *   the super class (Zombie) constructor
- *   while passing in the 3 Zombie constructor params
- *
- * @name RangedZombie
- * @param {number} health           The zombie's health.
- * @param {number} strength         The zombie's strength.
- * @param {number} speed            The zombie's speed.
- */
-
+  }
+}
 
 /**
- * RangedZombie Extends Zombie Class
- * -----------------------------
- */
+* Class => ExplodingZombie(health, strength, speed)
+* -----------------------------
+* Creates an exploding zombie.
+*
+* The ExplodingZombie class constructor will call
+*   the super class (Zombie) constructor
+*   while passing in the 3 Zombie constructor params
+*
+* @name ExplodingZombie
+* @param {number} health           The zombie's health.
+* @param {number} strength         The zombie's strength.
+* @param {number} speed            The zombie's speed.
+*/
+class ExplodingZombie extends Zombie{
+  super(health, strength, speed){
 
+  }
 
-
-/**
- * Class => ExplodingZombie(health, strength, speed)
- * -----------------------------
- * Creates an exploding zombie.
- *
- * The ExplodingZombie class constructor will call
- *   the super class (Zombie) constructor
- *   while passing in the 3 Zombie constructor params
- *
- * @name ExplodingZombie
- * @param {number} health           The zombie's health.
- * @param {number} strength         The zombie's strength.
- * @param {number} speed            The zombie's speed.
- */
-
+}
 
 /**
- * ExplodingZombie Extends Zombie Class
- * -----------------------------
- */
+* ExplodingZombie Extends Zombie Class
+* -----------------------------
+*/
 
 
 
 
 /**
- * Sample run.
- * Feel free to edit this and check your game logic.
- */
+* Sample run.
+* Feel free to edit this and check your game logic.
+*/
 function runGame() {
   // var player = new Player("Joan", 500, 30, 70);
   // var zombie = new Zombie(40, 50, 20);
