@@ -8,6 +8,25 @@
  * @property {string} name
  */
 
+class Item {
+    constructor (name){
+      this._name = name;
+    }
+
+    get name(){
+      return this._name
+    }
+
+    set name(name){
+      if(typeof(name) === 'string'){
+        this._name = name;
+      }else {
+        throw new TypeError('must be string')
+      }
+    }
+}
+
+
 
 /**
  * Class => Weapon(name, damage)
@@ -25,7 +44,25 @@
  * @property {number} damage
  */
 
+class Weapon extends Item {
+  constructor(name, damage){
+    super(damage);
+    this._damage = damage;
+    this._name = name;
 
+  }
+  get damage(){
+    return this._damage
+  }
+
+  set damage(damage){
+    if (typeof(damage) === 'number') {
+      return this._damage = damage
+    }else {
+      throw new TypeError('must be number');
+    }
+  }
+}
 /**
  * Weapon Extends Item Class
  * -----------------------------
@@ -49,7 +86,25 @@
  * @property {number} energy
  */
 
+class Food extends Item{
 
+  constructor(name, energy){
+    super(energy);
+    this._energy = energy;
+    this._name = name;
+  }
+  get energy(){
+    return this._energy
+  }
+
+  set energy (energy){
+    if (typeof(energy) === 'number') {
+      return this._energy = energy
+    }else {
+      throw new TypeError('must be number');
+    }
+  }
+}
 /**
  * Food Extends Item Class
  * -----------------------------
@@ -79,7 +134,78 @@
  * @property {method} getMaxHealth         Returns private variable `maxHealth`.
  */
 
+class Player{
+  constructor (name, health, strength, speed){
+    this._pack = [];
+    this._maxHealth = health;
+    this._name = name;
+    this._health = health;
+    this._strength = strength;
+    this._speed = speed;
+    this._isAlive = true
+    this._equipped = false;
 
+  }
+  get name(){
+    return this._name;
+  }
+  get health(){
+    return this._health;
+  }
+  get strength(){
+    return this._strength;
+  }
+  get speed(){
+    return this._speed;
+  }
+  get isAlive (){
+    return this._isAlive;
+  }
+  get equipped(){
+    return this._equipped
+  }
+
+getPack(){
+  return this._pack
+}
+getMaxHealth(){
+  return this._maxHealth;
+}
+
+takeItem(item){
+  if (this._pack.length <3){
+    this._pack.push(item);
+    console.log('added item')
+    return true;
+  }else {
+    console.log('pack full, cannot add anymore');
+    return false
+  }
+}
+
+discardItem(item){
+  console.log('running');
+ if(this._pack.indexOf(item) === -1){
+   console.log('nothing was discarded')
+   return false
+ }else {
+   this._pack.splice(this._pack.indexOf(item),1)
+   console.log('item was discarded');
+   return true;
+   }
+}
+checkPack(){
+console.log(this._pack);
+}
+equip(itemToEquip){
+  if(this._equipped = true){
+    this._pack.splice(this._pack.indexOf(itemToEquip), 1)
+    return true
+  }else {
+
+  }
+}
+}
 /**
  * Player Class Method => checkPack()
  * -----------------------------
@@ -91,7 +217,6 @@
  *
  * @name checkPack
  */
-
 
 /**
  * Player Class Method => takeItem(item)
