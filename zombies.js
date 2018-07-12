@@ -233,88 +233,88 @@ class Player {
         this._pack.splice(itemToEquipIndex, 1, this.equipped);
         this.equipped = itemToEquip;
         return;
-      }else{
+      } else {
         this.equipped = itemToEquip;
         this._pack.splice(itemToEquipIndex, 1);
       }
     }
+  }
+
+
+  /**
+  * Player Class Method => eat(itemToEat)
+  * -----------------------------
+  * Player eats a food item, restoring their health.
+  *
+  * Player can only eat Food instances.
+  * Player can only eat food items from their pack.
+  *
+  * Remove itemToEat from the pack.
+  * Increase the player's health by the food's energy amount, but do not
+  *   exceed the player's max health.  If exceeded, simply set player's health
+  *   to max health instead.
+  * To access the player's max health, be sure to use Player's getMaxHealth method.
+  * You should be able to invoke this function on a Player instance.
+  *
+  * @name eat
+  * @param {Food} itemToEat  The food item to eat.
+  */
+  eat(itemToEat) {
+    if (itemToEat instanceof Food && this._pack.includes(itemToEat)) {
+      let itemToEatIndex = this._pack.indexOf(itemToEat);
+      this._pack.splice(itemToEatIndex, 1);
+      if (this.health + itemToEat.energy < this.getMaxHealth()) {
+        this.health += itemToEat.energy;
+        return;
+      }
+      this.health = this.getMaxHealth();
     }
+  }
 
+  /**
+  * Player Class Method => useItem(item)
+  * -----------------------------
+  * Player uses an item from the pack.
+  *
+  * If the item is a weapon, the player should equip the item.
+  * If the item is food, the player should eat the item.
+  * You should be able to invoke this function on a Player instance.
+  *
+  * @name useItem
+  * @param {Item/Weapon/Food} item   The item to use.
+  */
 
-/**
-* Player Class Method => eat(itemToEat)
-* -----------------------------
-* Player eats a food item, restoring their health.
-*
-* Player can only eat Food instances.
-* Player can only eat food items from their pack.
-*
-* Remove itemToEat from the pack.
-* Increase the player's health by the food's energy amount, but do not
-*   exceed the player's max health.  If exceeded, simply set player's health
-*   to max health instead.
-* To access the player's max health, be sure to use Player's getMaxHealth method.
-* You should be able to invoke this function on a Player instance.
-*
-* @name eat
-* @param {Food} itemToEat  The food item to eat.
-*/
-eat(itemToEat) {
-  if (itemToEat instanceof Food &&this._pack.includes(itemToEat)) {
-  let itemToEatIndex = this._pack.indexOf(itemToEat);
-    this._pack.splice(itemToEatIndex, 1);
-    if (this.health + itemToEat.energy < this.getMaxHealth()) {
-      this.health += itemToEat.energy;
-      return;
+  useItem(item) {
+    if (item instanceof Weapon) {
+      this.equip(item)
+    } else if (item instanceof Food) {
+      this.eat(item)
+    } else {
+      return false;
     }
-    this.health = this.getMaxHealth();
   }
-}
-  
-/**
-* Player Class Method => useItem(item)
-* -----------------------------
-* Player uses an item from the pack.
-*
-* If the item is a weapon, the player should equip the item.
-* If the item is food, the player should eat the item.
-* You should be able to invoke this function on a Player instance.
-*
-* @name useItem
-* @param {Item/Weapon/Food} item   The item to use.
-*/
-
-useItem(item){
-  if(item instanceof Weapon){
-    this.equip(item)
-  }else if(item instanceof Food){
-    this.eat(item)
-  }else {
-    return false;
+  /**
+  * Player Class Method => equippedWith()
+  * -----------------------------
+  * Player checks their equipment.
+  *
+  * Prints the player's name and equipped weapon's name.
+  * If nothing is equipped, prints a message saying so.
+  * Also returns the equipped weapon's name or false if nothing is equipped.
+  * You should be able to invoke this function on a Player instance.
+  *
+  * @name equippedWith
+  * @return {string/boolean}   Weapon name or false if nothing is equipped.
+  */
+  equippedWith() {
+    if (this.equipped === false) {
+      console.log('no weapon is equipped')
+      return false
+    } else {
+      console.log('no weapon equipped')
+      return this.equipped.name
+    }
   }
-}
-/**
-* Player Class Method => equippedWith()
-* -----------------------------
-* Player checks their equipment.
-*
-* Prints the player's name and equipped weapon's name.
-* If nothing is equipped, prints a message saying so.
-* Also returns the equipped weapon's name or false if nothing is equipped.
-* You should be able to invoke this function on a Player instance.
-*
-* @name equippedWith
-* @return {string/boolean}   Weapon name or false if nothing is equipped.
-*/
-equippedWith(){
-  if(this.equipped === false){
-    console.log('no weapon is equipped')
-    return false
-  }else {
-    console.log('no weapon equipped')
-    return this.equipped.name
-  }
-}
 }
 /**
 * Class => Zombie(health, strength, speed)
@@ -332,8 +332,8 @@ equippedWith(){
 * @property {boolean} isAlive      Default value should be `true`.
 */
 
-class Zombie{
-  constructor(health, strength, speed){
+class Zombie {
+  constructor(health, strength, speed) {
     this.health = health;
     this.strength = strength;
     this.speed = speed;
@@ -363,10 +363,12 @@ class Zombie{
 */
 
 class FastZombie extends Zombie {
-  super(health, strength, speed){
-
+  constructor(health, strength, speed) {
+    super(Zombie);
+    this.health = health;
+    this.strength = strength;
+    this.speed = speed;
   }
-
 }
 
 /**
@@ -391,9 +393,12 @@ class FastZombie extends Zombie {
 * -----------------------------
 */
 
-class StrongZombie extends Zombie{
-  super(health, strength, speed){
-
+class StrongZombie extends Zombie {
+  constructor(health, strength, speed) {
+    super(Zombie);
+    this.health = health;
+    this.strength = strength;
+    this.speed = speed;
   }
 }
 /**
@@ -417,9 +422,12 @@ class StrongZombie extends Zombie{
 * -----------------------------
 */
 
-class RangedZombie extends Zombie{
-  super(health, strength, speed){
-
+class RangedZombie extends Zombie {
+  constructor(health, strength, speed) {
+    super(Zombie);
+    this.health = health;
+    this.strength = strength;
+    this.speed = speed;
   }
 }
 
@@ -437,9 +445,12 @@ class RangedZombie extends Zombie{
 * @param {number} strength         The zombie's strength.
 * @param {number} speed            The zombie's speed.
 */
-class ExplodingZombie extends Zombie{
-  super(health, strength, speed){
-
+class ExplodingZombie extends Zombie {
+  constructor(health, strength, speed) {
+    super(Zombie);
+    this.health = health;
+    this.strength = strength;
+    this.speed = speed;
   }
 
 }
