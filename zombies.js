@@ -95,8 +95,8 @@ Food.prototype.constructor = Food;
  * @property {method} getMaxHealth         Returns private variable `maxHealth`.
  */
 function Player(name, health, strength, speed) {
-  let _pack = [];
-  let _maxHealth = health;
+  const _pack = [];
+  const _maxHealth = health;
   this.name = name;
   this.health = health;
   this.strength = strength;
@@ -110,7 +110,7 @@ function Player(name, health, strength, speed) {
     return _maxHealth;
   }
 
-
+}
 
   /**
    * Player Class Method => checkPack()
@@ -182,7 +182,7 @@ function Player(name, health, strength, speed) {
    */
   Player.prototype.discardItem = function (item) {
     let indexOfItem = this.getPack().indexOf(item);
-    if (indexOfItem>-1) {
+    if (indexOfItem > -1) {
       this.getPack().splice(indexOfItem, 1);
       console.log(this.name + ' discarded ' + this.item);
       return true;
@@ -244,12 +244,12 @@ function Player(name, health, strength, speed) {
    */
   Player.prototype.eat = function (itemToEat) {
     let indexOfItemToEat = this.getPack().indexOf(itemToEat);
-    if (itemToEat instanceof Food && indexOfItemToEat >-1) {
+    if (itemToEat instanceof Food && indexOfItemToEat > -1) {
       this.getPack().splice(indexOfItemToEat, 1);
       this.health += itemToEat.energy;
       if (this.health > this.getMaxHealth()) {
         this.health = this.getMaxHealth();
-      } 
+      }
     }
   }
 
@@ -284,7 +284,7 @@ function Player(name, health, strength, speed) {
    * You should be able to invoke this function on a Player instance.
    *
    * @name equippedWith
-   * @return {string/boolean}   Weapon name or false if nothing is equipped.
+   * @return {string/boolean}   Weapon na me or false if nothing is equipped.
    */
   Player.prototype.equippedWith = function () {
     if (this.equipped) {
@@ -296,7 +296,7 @@ function Player(name, health, strength, speed) {
     }
   }
 
-}
+
 /**
  * Class => Zombie(health, strength, speed)
  * -----------------------------
@@ -314,7 +314,7 @@ function Player(name, health, strength, speed) {
  */
 
 function Zombie(health, strength, speed) {
-  let _maxHealth = health;
+  const _maxHealth = health;
   this.health = health;
   this.strength = strength;
   this.speed = speed;
@@ -430,7 +430,7 @@ ExplodingZombie.prototype = Object.create(Zombie.prototype);
 ExplodingZombie.prototype.constructor = ExplodingZombie;
 
 /**
- * Sample run.
+ * Sample run. 
  * Feel free to edit this and check your game logic.
  */
 function runGame() {
